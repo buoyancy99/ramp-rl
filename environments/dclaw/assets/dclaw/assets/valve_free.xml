@@ -1,0 +1,23 @@
+<mujocoinclude name='valve_free' >
+    <body name='valve_base' pos='.0 0.00 0.01' euler='0 0 0' childclass="station">
+<!--        <geom class='station_viz_plastic_transparent' type='box' size='.031 .031 .005' pos='.0125 0 -.005' />-->
+<!--        <geom class='station_viz_metal_grey' mesh="motor" pos='0 0 0.018' euler='0 0 1.57'/>-->
+<!--        <geom class='station_phy_metal' mesh="motor_hull" pos='0 0 0.018' euler='0 0 1.57'/>-->
+        <body name='x_virtual' pos='0 0 0.038' euler='0 0 0'>
+            <geom class='station_phy_plastic' type="sphere" pos='0.0 0.0 -0.005' size="0.001" euler='0 0 0'/>
+            <joint name="valve_x_virtual"  pos="0 0 0" type="slide" axis="1 0 0" range='-0.1 0.1' damping="0.0" limited='true' />
+                <body name='y_virtual' pos='0 0 0' euler='0 0 0'>
+                    <geom class='station_phy_plastic' type="sphere" pos='0.0 0.0 -3.001' size="0.001" euler='0 0 0'/>
+                    <joint name="valve_y_virtual"  pos="0 0 0" type="slide" axis="0 1 0" range='-0.1 0.1' damping="0.0" limited='true' />
+                    <body name='valve' pos='0 0 0.038' euler='0 0 -1.57'>
+                        <geom class='station_viz_plastic_white' mesh="valve_3" pos='0 0 0' />
+                        <geom class='station_phy_plastic' type="capsule" pos='0.0 0.038 0.054' size="0.021 0.035" euler='1.57 0 0'/>
+                        <geom class='station_phy_plastic' type="capsule" pos='-0.034 -0.019 0.054' size="0.021 0.035" euler='1.57 2.0944 0'/>
+                        <geom class='station_phy_plastic' type="capsule" pos='0.034 -0.019 0.054' size="0.021 0.035" euler='1.57 4.1887 0'/>
+                        <site name="valve_mark" type='capsule' size='.003 0.0375' pos='0 .0375 .073' rgba='0 0 1 1' euler='1.57 0 0'/>
+                        <joint name="valve_OBJRx"  pos="0 0 0" type="hinge" axis="0 0 1" range='-6.28 6.28' damping=".1" limited='true' />
+                    </body>
+                </body>
+        </body>
+    </body>
+</mujocoinclude>

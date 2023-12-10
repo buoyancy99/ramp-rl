@@ -1,0 +1,12 @@
+torch
+torchvision
+numpy
+gym==0.23.1
+wandb
+tqdm
+scipy
+opencv-python
+plotly
+git+https://github.com/buoyancy99/stable-baselines3@ramp-rl
+git+https://github.com/buoyancy99/metaworld@ramp-rl
+git+https://github.com/Farama-Foundation/Gym-Robotics@main
