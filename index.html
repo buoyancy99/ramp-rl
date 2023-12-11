@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="RaMP is a self-supervised reinforcement learning algorithm that pre-training on exploration trajectories
+      without (or with unknown) reward. It then quickly adapts to new tasks through interaction with the environment."
+    />
+    <meta name="keywords" content="Model-based RL, Transfer, Offline RL" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      RaMP: Self-Supervised Reinforcement Learning that Transfers using Random
+      Features
+    </title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css" />
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"
+    />
+    <link rel="stylesheet" href="./static/css/index.css" />
+    <link rel="icon" href="./static/images/favicon.svg" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+  </head>
+  <body>
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                RaMP: Self-Supervised Reinforcement Learning that Transfers
+                using Random Features
+              </h1>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://people.csail.mit.edu/boyuanc/">Boyuan Chen</a
+                  ><sup>1</sup>,</span
+                >
+                <span class="author-block">
+                  <a href="https://homes.cs.washington.edu/~zchuning/"
+                    >Chuning Zhu</a
+                  ><sup>2</sup>,</span
+                >
+                <span class="author-block">
+                  <a href="https://people.csail.mit.edu/pulkitag/"
+                    >Pulkit Agrawal</a
+                  ><sup>1</sup>,</span
+                >
+                <span class="author-block">
+                  <a href="https://kzhang66.github.io/">Kaiqing Zhang</a
+                  ><sup>3</sup>,</span
+                >
+                <span class="author-block">
+                  <a href="https://homes.cs.washington.edu/~abhgupta/"
+                    >Abhishek Gupta</a
+                  ><sup>2</sup>,
+                </span>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"><sup>1</sup>MIT,</span>
+                <span class="author-block"
+                  ><sup>2</sup>University of Washington</span
+                >
+                <span class="author-block"
+                  ><sup>3</sup>University of Maryland</span
+                >
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <!-- PDF Link. -->
+                  <span class="link-block">
+                    <a
+                      href="https://arxiv.org/abs/2305.17250"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+                  <!-- Video Link. -->
+                  <span class="link-block">
+                    <a
+                      href="https://youtu.be/grRPstL9tzA"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon">
+                        <i class="fab fa-youtube"></i>
+                      </span>
+                      <span>Video</span>
+                    </a>
+                  </span>
+                  <!-- Code Link. -->
+                  <span class="link-block">
+                    <a
+                      href="https://github.com/buoyancy99/ramp-rl"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paper video. -->
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+              <!-- <h2 class="title is-3">Video</h2> -->
+              <div class="publication-video">
+                <iframe
+                  src="TODO"
+                  frameborder="0"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <!--/ Paper video. -->
+        </div>
+      </div>
+    </section>
+
+    <!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/repo_turtlebot.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">RePo learns minimally task-relevant representations that is resilient to spurious variations.
+      </h2>
+    </div>
+  </div>
+</section> -->
+
+    <div class="hr"></div>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              Model-free reinforcement learning algorithms have exhibited great
+              potential in solving single-task sequential decision-making
+              problems with high-dimensional observations and long horizons, but
+              are known to be hard to generalize across tasks. Model-based RL,
+              on the other hand, learns task-agnostic models of the world that
+              naturally enables transfer across different reward functions, but
+              struggles to scale to complex environments due to the compounding
+              error. To get the best of both worlds, we propose a
+              self-supervised reinforcement learning method that enables the
+              transfer of behaviors across tasks with different rewards, while
+              circumventing the challenges of model-based RL. In particular, we
+              show self-supervised pre-training of model-free reinforcement
+              learning with a number of random features as rewards allows
+              implicit modeling of long-horizon environment dynamics. Then,
+              planning techniques like model-predictive control using these
+              implicit models enable fast adaptation to problems with new reward
+              functions. Our method is self-supervised in that it can be trained
+              on offline datasets without reward labels, but can then be quickly
+              deployed on new tasks. We validate that our proposed method
+              enables transfer across tasks on a variety of manipulation and
+              locomotion domains in simulation, opening the door to generalist
+              decision-making agents.
+              <!--/ Abstract. -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hr"></div>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width has-text-justified">
+            <h2 class="title is-3 has-text-centered">Problem Setup</h2>
+            <div class="content has-text-justified">
+              <p>
+                Consider a transfer learning scenario, where we assume access to
+                an offline dataset consisting of interactions with some
+                environments. This dataset assumes that all transitions are
+                collected under the same transition dynamics but it doesn't
+                feature rewards towards any tasks. Can we pre-train
+                reinforcement learning algorithms on such datasets and then
+                quickly adapt to new tasks with novel reward functions but same
+                dynamics?
+              </p>
+            </div>
+            <div class="content has-text-centered">
+              <img
+                src="./static/images/problem.png"
+                class="inline-figure-six"
+                alt="RaMP is a self-supervised reinforcement learning algorithm that pre-training on exploration trajectories
+                without (or with unknown) reward. It then quickly adapts to new tasks through interaction with the environment."
+              />
+            </div>
+            <div class="content has-text-justified">
+              <p>
+                In this paper, we assume that any reward function r(s, a) can be
+                modeled as a linearly combination of a set of random features,
+                obtained by projection (s, a) with a randomly initialized neural
+                network. The same linear weight can also be used to weigh the
+                accumulated random features to approximate the Q-function as
+                result.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hr"></div>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width has-text-justified">
+            <h2 class="title is-3 has-text-centered">Method Overview</h2>
+            <h3 class="title is-4">Key Insight</h3>
+            <div class="content has-text-justified">
+              <p>
+                Model-free RL has the problem of transfering to novel tasks
+                because it models the long-term accumulation of one specific
+                reward function in Q-value estimation. RaMP is built on the
+                insight that we can avoid such task dependency if we directly
+                model the long-term accumulation of many random functions of
+                states and actions (treating them as the rewards). Since these
+                random functions of the state and actions are task-agnostic and
+                uninformed of any specific reward function, they simply capture
+                information about the transition dynamics of the environment.
+                However, they do so without actually requiring autoregressive
+                generative modeling as in model-based RL, which incurs
+                compounding error.
+              </p>
+            </div>
+            <div class="content has-text-centered">
+              <img
+                src="./static/images/method.png"
+                class="inline-figure-six"
+                alt="Method"
+              />
+            </div>
+            <h3 class="title is-4">Offline training</h3>
+            <div class="content has-text-justified">
+              <p>
+                At training time, the offline dataset can be used to learn a set
+                of “random” Q-basis functions for different random functions of
+                the state and action. This effectively forms an “implicit
+                model”, as it carries information about how the dynamics
+                propagate, without being tied to any particular reward function.
+                As shown in the figure, we pre-train a neural network to
+                approximate the accumulated random features under a sequence of
+                actions starting from an intial state.
+              </p>
+            </div>
+            <h3 class="title is-4">Online Quick Adaptation to New Objective</h3>
+            <div class="content has-text-justified">
+              <p>
+                At test time, given a new reward function, we can recombine
+                Q-basis functions to effectively approximate the true
+                reward-specific Q-function under any policy. We can also quickly
+                regress a linear weight for the new test-time reward using the
+                random features and new rewards. The Q-basis combined with this
+                weight gives us an inferred Q-function, which can then be used
+                for planning for the new task with MPC.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hr"></div>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width has-text-justified">
+            <h2 class="title is-3 has-text-centered">Experiments</h2>
+
+            <h3 class="title is-4">Transfer learning to new tasks</h3>
+            <div class="content has-text-justified">
+              <p>
+                We evaluate the ability of RaMP to leverage the knowledge of
+                shared dynamics from an offline dataset to quickly solve new
+                tasks with arbitrary rewards. In particular, as shown in the
+                figure below, we make no assumptions about train/test time task
+                distribution. A test time task may have reward/goal that's
+                completely out of distribution, and RaMP can still adapt quickly
+                unlike goal conditioned RL.
+              </p>
+            </div>
+
+            <div class="content has-text-centered">
+              <img
+                src="./static/images/goal_dist.png"
+                class="inline-figure-four-thirds"
+                alt="Goal distribution."
+              />
+            </div>
+
+            <div class="content has-text-justified">
+              <p>
+                Given this problem setup, we compare RaMP with a variety of
+                baselines. (1) MBPO is a modelbased RL method that learns a
+                standard one-step dynamics model and uses actor-critic methods
+                to plan in the model. We pre-train the dynamics model for MBPO
+                on the offline dataset. (2) PETS is a model-based RL method that
+                learns an ensemble of one-step dynamics models and performs MPC.
+                We pre-train the dynamics model on the offline dataset and use
+                the cross-entropy method (CEM) to plan. (3) Successor feature
+                (SF) is a framework for transfer learning in RL as described in
+                Sec. 1.1. SF typically assumes access to a set of policies
+                towards different goals along with a learned featurization, so
+                we provide it with the privileged dataset to learn a set of
+                training policies. We also learn successor features with the
+                privileged dataset. (4) CQL : As an oracle comparison, we
+                compare with a goal-conditioned variant of an offline RL
+                algorithm (CQL). CQL is a model-free offline RL algorithm that
+                learns policies from offline data. While model-free offline RL
+                naturally struggles to adapt to arbitrarily changing rewards, we
+                provide CQL with information about the goal at both training and
+                testing time. We evaluate RaMP on a variety of manipulation and
+                locomotion tasks in simulation. We show that RaMP can learn to
+                solve tasks with high-dimensional observations and actions, as
+                well as long horizons.
+              </p>
+            </div>
+            <div class="content has-text-centered">
+              <img
+                src="./static/images/curves.png"
+                class="inline-figure-four-thirds"
+                alt="Comparison with baselines."
+              />
+            </div>
+            <h3 class="title is-4">
+              High-dimensional observation and action spaces and long horizons
+            </h3>
+            <div class="content has-text-justified">
+              <p>
+                In particular, we evaluate the ability of our method to scale to
+                tasks with longer horizons. We consider locomotion domains such
+                as the Hopper environment from OpenAI Gym. We chose the offline
+                objectives to be a mixture of skills such as standing,
+                sprinting, jumping, or running backward with goals defined as
+                target velocities or heights. The online objectives consist of
+                unseen goal velocities or heights for standing, sprinting,
+                jumping or running. RaMP maintains the highest performance when
+                adapting to novel online objectives, as it avoids compounding
+                errors by directly modeling accumulated random features. MBPO
+                adapts at a slower rate since higher dimensional observation and
+                longer horizons increase the compounding error of model-based
+                methods. We note that SF is performing reasonably well, likely
+                because the method also reduces the compounding error compared
+                to MBPO, and it has privileged information. To understand
+                whether RaMP can scale to higher dimensional state-action
+                spaces, we consider a dexterous manipulation domain referred to
+                as the D’Claw domain in the figure. This domain has a 9 DoF
+                action space controlling each of the joints of the hand as well
+                as a 16-dimensional state space including object position. RaMP
+                consistently outperforms the baselines, and is able to adapt to
+                out-of-distribution goals at test time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hr"></div>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <h2 class="title has-text-centered">BibTeX</h2>
+        <pre><code>@misc{chen2023selfsupervised,
+      title={Self-Supervised Reinforcement Learning that Transfers using Random Features}, 
+      author={Boyuan Chen and Chuning Zhu and Pulkit Agrawal and Kaiqing Zhang and Abhishek Gupta},
+      year={2023},
+      eprint={2305.17250},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}</code></pre>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content has-text-centered">
+              <p>
+                Website template from
+                <a href="https://nerfies.github.io/">Nerfies</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
